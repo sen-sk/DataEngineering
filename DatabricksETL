@@ -16,3 +16,11 @@ val SMSCorruptDF = spark.read.option("mode","PERMISSIVE")
 .json(filePath)
 .select("SMSCorrupt","SMS")
 .filter($"SMSCorrupt".isNotNull)
+
+Rename Coloumns
+val cols = crimeDF.columns
+val camelCols = new scala.collection.mutable.ListBuffer[String]()
+cols.foreach(camelCols += _.toLowerCase.split(" ").reduceLeft(_+_.capitalize))
+
+val crimeRenamedColsDF = crimeDF.toDF(camelCols:_*)
+display(crimeRenamedColsDF)
